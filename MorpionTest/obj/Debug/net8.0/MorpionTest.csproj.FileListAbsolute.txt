@@ -1,0 +1,7 @@
+C:\Users\Guillaume\Desktop\Année-2-ingénieur\tests\seance_1\Séance 2\Tp01_Tests_Morpion\MorpionTest\bin\Debug\net8.0\CoverletSourceRootsMapping_MorpionTest
+C:\Users\Guillaume\Desktop\Année-2-ingénieur\tests\seance_1\Séance 2\Tp01_Tests_Morpion\MorpionTest\obj\Debug\net8.0\MorpionTest.csproj.AssemblyReference.cache
+C:\Users\Guillaume\Desktop\Année-2-ingénieur\tests\seance_1\Séance 2\Tp01_Tests_Morpion\MorpionTest\obj\Debug\net8.0\MorpionTest.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Guillaume\Desktop\Année-2-ingénieur\tests\seance_1\Séance 2\Tp01_Tests_Morpion\MorpionTest\obj\Debug\net8.0\MorpionTest.AssemblyInfoInputs.cache
+C:\Users\Guillaume\Desktop\Année-2-ingénieur\tests\seance_1\Séance 2\Tp01_Tests_Morpion\MorpionTest\obj\Debug\net8.0\MorpionTest.AssemblyInfo.cs
+C:\Users\Guillaume\Desktop\Année-2-ingénieur\tests\seance_1\Séance 2\Tp01_Tests_Morpion\MorpionTest\obj\Debug\net8.0\MorpionTest.csproj.CoreCompileInputs.cache
+C:\Users\Guillaume\Desktop\Année-2-ingénieur\tests\seance_1\Séance 2\Tp01_Tests_Morpion\MorpionTest\obj\Debug\net8.0\MorpionTest.sourcelink.json
