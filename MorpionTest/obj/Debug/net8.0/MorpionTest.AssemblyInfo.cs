@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MorpionTest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c43afac7fa4d7135b78d230c1ff197e212236059")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bb791d92c9c0d3c1b7ce7216e15537f234cccaaa")]
 [assembly: System.Reflection.AssemblyProductAttribute("MorpionTest")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MorpionTest")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
