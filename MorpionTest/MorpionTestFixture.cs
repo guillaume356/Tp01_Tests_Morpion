@@ -14,7 +14,8 @@ namespace MorpionTest
 
         public MorpionTestFixture()
         {
-            morpion = new Morpion();
+            ConsoleGameView gameView = new ConsoleGameView();
+            morpion = new Morpion(gameView);
         }
 
         public void ResetGrille()

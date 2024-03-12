@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MorpionApp.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,15 +9,16 @@ namespace MorpionApp
 {
     public class PuissanceQuatre
     {
+        private IGameView gameView;
         public bool quiterJeu = false;
         public bool tourDuJoueur = true;
         public char[,] grille;
 
-        public PuissanceQuatre()
+        public PuissanceQuatre(IGameView gameView)
         {
+            this.gameView = gameView;
             grille = new char[4, 7];
         }
-
         public void BoucleJeu()
         {
             while (!quiterJeu)
@@ -57,15 +59,15 @@ namespace MorpionApp
                 }
                 if (!quiterJeu)
                 {
-                    Console.WriteLine("Appuyer sur [Echap] pour quitter, [Entrer] pour rejouer.");
+                    gameView.DisplayLineBreakMessage("Appuyer sur [Echap] pour quitter, [Entrer] pour rejouer.");
                 GetKey:
-                    switch (Console.ReadKey(true).Key)
+                    switch (gameView.GetUserInput())
                     {
                         case ConsoleKey.Enter:
                             break;
                         case ConsoleKey.Escape:
                             quiterJeu = true;
-                            Console.Clear();
+                            gameView.ClearScreen();
                             break;
                         default:
                             goto GetKey;
@@ -82,21 +84,21 @@ namespace MorpionApp
 
             while (!quiterJeu && !moved)
             {
-                Console.Clear();
+                gameView.ClearScreen();
                 affichePlateau(grille);
-                Console.WriteLine();
-                Console.WriteLine($"Joueur {joueur}, choisir une colonne et appuyer sur [Entrer]");
-                int cursorLeft = column * 4 + 4; 
+                gameView.DisplayLineBreak();
+                gameView.DisplayLineBreakMessage($"Joueur {joueur}, choisir une colonne et appuyer sur [Entrer]");
+                int cursorLeft = column * 4 + 4;
                 int cursorTop = grille.GetLength(0) * 2;
 
-                Console.SetCursorPosition(cursorLeft, cursorTop);
+                gameView.SetCursorPosition(cursorLeft, cursorTop);
 
-                var key = Console.ReadKey(true).Key;
+                var key = gameView.GetUserInput();
                 switch (key)
                 {
-                    case ConsoleKey.Escape: 
+                    case ConsoleKey.Escape:
                         quiterJeu = true;
-                        Console.Clear();
+                        gameView.ClearScreen();
                         return;
 
                     case ConsoleKey.RightArrow:
@@ -108,19 +110,19 @@ namespace MorpionApp
                         break;
 
                     case ConsoleKey.Enter:
-                        for (int row = grille.GetLength(0) - 1; row >= 0; row--) 
+                        for (int row = grille.GetLength(0) - 1; row >= 0; row--)
                         {
-                            if (grille[row, column] == ' ') 
+                            if (grille[row, column] == ' ')
                             {
-                                grille[row, column] = joueur; 
+                                grille[row, column] = joueur;
                                 moved = true;
-                                break; 
+                                break;
                             }
                         }
                         if (!moved)
                         {
-                            Console.WriteLine("Colonne pleine. Choisissez une autre colonne.");
-                            Console.ReadKey(true); 
+                            gameView.DisplayLineBreakMessage("Colonne pleine. Choisissez une autre colonne.");
+                            Console.ReadKey(true);
                         }
                         break;
                 }
@@ -133,33 +135,33 @@ namespace MorpionApp
             int lignes = grille.GetLength(0);
             int colonnes = grille.GetLength(1);
 
-            Console.Write(" ");
+            gameView.Display(" ");
             for (int j = 0; j < colonnes; j++)
             {
-                Console.Write($"  {j} ");
+                gameView.Display($"  {j} ");
             }
-            Console.WriteLine();
+            gameView.DisplayLineBreak();
 
             for (int i = 0; i < lignes; i++)
             {
-                Console.Write($"{i}");
+                gameView.Display($"{i}");
                 for (int j = 0; j < colonnes; j++)
                 {
-                    Console.Write(" | " + grille[i, j]);
+                    gameView.Display(" | " + grille[i, j]);
                 }
-                Console.WriteLine(" |");
+                gameView.DisplayLineBreakMessage(" |");
 
                 if (i < lignes - 1)
                 {
-                    Console.Write("  ");
+                    gameView.Display("  ");
                     for (int j = 0; j < colonnes; j++)
                     {
-                        Console.Write("---+");
+                        gameView.Display("---+");
                     }
-                    Console.WriteLine();
+                    gameView.DisplayLineBreak();
                 }
             }
-            Console.WriteLine();
+            gameView.DisplayLineBreak();
         }
 
         public bool verifVictoire(char c)
@@ -207,19 +209,19 @@ namespace MorpionApp
                 for (int j = 0; j < grille.GetLength(1); j++)
                 {
                     if (grille[i, j] == ' ')
-                        return false; 
+                        return false;
                 }
             }
-            return true; 
+            return true;
         }
 
 
 
         public void finPartie(string msg)
         {
-            Console.Clear();
+            gameView.ClearScreen();
             affichePlateau(grille);
-            Console.WriteLine(msg);
+            gameView.DisplayLineBreakMessage(msg);
         }
     }
 }

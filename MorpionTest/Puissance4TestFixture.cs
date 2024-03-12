@@ -14,7 +14,8 @@ namespace MorpionTest
 
         public Puissance4TestFixture()
         {
-            puissanceQuatre = new PuissanceQuatre();
+            ConsoleGameView gameView = new ConsoleGameView();
+            puissanceQuatre = new PuissanceQuatre(gameView);
         }
 
         public void ResetGrille()

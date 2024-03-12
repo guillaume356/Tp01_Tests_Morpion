@@ -15,11 +15,13 @@ namespace MorpionApp
             switch (Console.ReadKey(true).Key)
             {
                 case ConsoleKey.X:
-                    Morpion morpion = new Morpion();
+                    var gameView = new ConsoleGameView();
+                    var morpion = new Morpion(gameView);
                     morpion.BoucleJeu();
                     break;
                 case ConsoleKey.P:
-                    PuissanceQuatre puissanceQuatre = new PuissanceQuatre();
+                    var gameView1 = new ConsoleGameView();
+                    var puissanceQuatre = new PuissanceQuatre(gameView1);
                     puissanceQuatre.BoucleJeu();
                     break;
                 default:
@@ -35,11 +37,13 @@ namespace MorpionApp
                     switch (Console.ReadKey(true).Key)
                     {
                         case ConsoleKey.X:
-                            Morpion morpion = new Morpion();
+                            var gameView = new ConsoleGameView();
+                            var morpion = new Morpion(gameView);
                             morpion.BoucleJeu();
                             break;
                         case ConsoleKey.P:
-                            PuissanceQuatre puissanceQuatre = new PuissanceQuatre();
+                            var gameView1 = new ConsoleGameView();
+                            var puissanceQuatre = new PuissanceQuatre(gameView1);
                             puissanceQuatre.BoucleJeu();
                             break;
                         default:

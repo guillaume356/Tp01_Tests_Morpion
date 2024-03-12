@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MorpionApp.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +9,14 @@ namespace MorpionApp
 {
     public class Morpion
     {
+        private IGameView view;
         public bool quiterJeu = false;
         public bool tourDuJoueur = true;
         public char[,] grille;
 
-        public Morpion()
+        public Morpion(IGameView gameView)
         {
+            view = gameView;
             grille = new char[3, 3];
         }
 
@@ -56,19 +59,19 @@ namespace MorpionApp
                 }
                 if (!quiterJeu)
                 {
-                    Console.WriteLine("Appuyer sur [Echap] pour quitter, [Entrer] pour rejouer.");
-                    GetKey:
-                        switch (Console.ReadKey(true).Key)
-                        {
-                            case ConsoleKey.Enter:
-                                break;
-                            case ConsoleKey.Escape:
-                                quiterJeu = true;
-                                Console.Clear();
-                                break;
-                            default:
-                                goto GetKey;
-                        }
+                    view.DisplayLineBreakMessage("Appuyer sur [Echap] pour quitter, [Entrer] pour rejouer.");
+                GetKey:
+                    switch (view.GetUserInput())
+                    {
+                        case ConsoleKey.Enter:
+                            break;
+                        case ConsoleKey.Escape:
+                            quiterJeu = true;
+                            view.ClearScreen();
+                            break;
+                        default:
+                            goto GetKey;
+                    }
                 }
 
             }
@@ -81,21 +84,21 @@ namespace MorpionApp
 
             while (!quiterJeu && !moved)
             {
-                Console.Clear();
+                view.ClearScreen();
                 affichePlateau(grille);
-                Console.WriteLine();
-                Console.WriteLine($"Joueur {joueur}, choisir une case valide et appuyer sur [Entrer]");
-                int cursorLeft = (column * 4) + 2; 
+                view.DisplayLineBreak();
+                view.DisplayLineBreakMessage($"Joueur {joueur}, choisir une case valide et appuyer sur [Entrer]");
+                int cursorLeft = (column * 4) + 2;
                 int cursorTop = (row * 2) + 1;
 
-                Console.SetCursorPosition(cursorLeft, cursorTop);
+                view.SetCursorPosition(cursorLeft, cursorTop);
 
-                var key = Console.ReadKey(true).Key;
+                var key = view.GetUserInput();
                 switch (key)
                 {
                     case ConsoleKey.Escape:
                         quiterJeu = true;
-                        Console.Clear();
+                        view.ClearScreen();
                         return;
 
                     case ConsoleKey.RightArrow:
@@ -130,33 +133,33 @@ namespace MorpionApp
             int lignes = grille.GetLength(0);
             int colonnes = grille.GetLength(1);
 
-            Console.Write(" ");
+            view.Display(" ");
             for (int j = 0; j < colonnes; j++)
             {
-                Console.Write($"  {j} ");
+                view.Display($"  {j} ");
             }
-            Console.WriteLine();
+            view.DisplayLineBreak();
 
             for (int i = 0; i < lignes; i++)
             {
-                Console.Write($"{i}");
+                view.Display($"{i}");
                 for (int j = 0; j < colonnes; j++)
                 {
-                    Console.Write(" | " + grille[i, j]);
+                    view.Display(" | " + grille[i, j]);
                 }
-                Console.WriteLine(" |");
+                view.DisplayLineBreakMessage(" |");
 
                 if (i < lignes - 1)
                 {
-                    Console.Write("  ");
+                    view.Display("  ");
                     for (int j = 0; j < colonnes; j++)
                     {
-                        Console.Write("---+");
+                        view.Display("---+");
                     }
-                    Console.WriteLine();
+                    view.DisplayLineBreak();
                 }
             }
-            Console.WriteLine();
+            view.DisplayLineBreak();
         }
 
 
@@ -198,9 +201,9 @@ namespace MorpionApp
 
         public void finPartie(string msg)
         {
-            Console.Clear();
+            view.ClearScreen();
             affichePlateau(grille);
-            Console.WriteLine(msg);
+            view.DisplayLineBreakMessage(msg);
         }
     }
 }
