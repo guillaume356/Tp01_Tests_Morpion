@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MorpionApp
 {
@@ -10,51 +6,48 @@ namespace MorpionApp
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Jouer à quel jeu ? Taper [X] pour le morpion et [P] pour le puissance 4.");
-        GetKey:
-            switch (Console.ReadKey(true).Key)
+            var gameView = new ConsoleGameView();
+
+            bool continuePlaying = true;
+            while (continuePlaying)
             {
-                case ConsoleKey.X:
-                    var gameView = new ConsoleGameView();
-                    var morpion = new Morpion(gameView);
-                    morpion.BoucleJeu();
-                    break;
-                case ConsoleKey.P:
-                    var gameView1 = new ConsoleGameView();
-                    var puissanceQuatre = new PuissanceQuatre(gameView1);
-                    puissanceQuatre.BoucleJeu();
-                    break;
-                default:
-                    goto GetKey;
-            }
-            Console.WriteLine("Jouer à un autre jeu ? Taper [R] pour changer de jeu. Taper [Echap] pour quitter.");
-        GetKey1:
-            switch (Console.ReadKey(true).Key)
-            {
-                case ConsoleKey.R:
-                    Console.WriteLine("Jouer à quel jeu ? Taper [X] pour le morpion et [P] pour le puissance 4.");
-                GetKey2:
-                    switch (Console.ReadKey(true).Key)
+                gameView.DisplayLineBreakMessage("Jouer à quel jeu ? Taper [X] pour le morpion et [P] pour le puissance 4.");
+
+                var gameSelected = false;
+                while (!gameSelected)
+                {
+                    switch (gameView.GetUserInput())
                     {
                         case ConsoleKey.X:
-                            var gameView = new ConsoleGameView();
                             var morpion = new Morpion(gameView);
                             morpion.BoucleJeu();
+                            gameSelected = true;
                             break;
                         case ConsoleKey.P:
-                            var gameView1 = new ConsoleGameView();
-                            var puissanceQuatre = new PuissanceQuatre(gameView1);
+                            var puissanceQuatre = new PuissanceQuatre(gameView);
                             puissanceQuatre.BoucleJeu();
+                            gameSelected = true;
                             break;
-                        default:
-                            goto GetKey2;
                     }
-                    break;
-                case ConsoleKey.Escape:
-                    break;
-                default:
-                    goto GetKey1;
+                }
+
+                gameView.DisplayLineBreakMessage("Jouer à un autre jeu ? Taper [R] pour changer de jeu. Taper [Echap] pour quitter.");
+
+                var quitSelected = false;
+                while (!quitSelected)
+                {
+                    switch (gameView.GetUserInput())
+                    {
+                        case ConsoleKey.R:
+                            quitSelected = true;
+                            break;
+                        case ConsoleKey.Escape:
+                            continuePlaying = false;
+                            quitSelected = true;
+                            break;
+                    }
+                }
             }
-        }        
+        }
     }
 }
