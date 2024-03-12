@@ -83,15 +83,18 @@ namespace MorpionApp
             while (!quiterJeu && !moved)
             {
                 Console.Clear();
-                affichePlateau();
+                affichePlateau(grille);
                 Console.WriteLine();
                 Console.WriteLine($"Joueur {joueur}, choisir une colonne et appuyer sur [Entrer]");
-                Console.SetCursorPosition(column * 6 + 1, 0);
+                int cursorLeft = column * 4 + 4; 
+                int cursorTop = grille.GetLength(0) * 2;
+
+                Console.SetCursorPosition(cursorLeft, cursorTop);
 
                 var key = Console.ReadKey(true).Key;
                 switch (key)
                 {
-                    case ConsoleKey.Escape:
+                    case ConsoleKey.Escape: 
                         quiterJeu = true;
                         Console.Clear();
                         return;
@@ -125,70 +128,97 @@ namespace MorpionApp
         }
 
 
-        public void affichePlateau()
+        public void affichePlateau(char[,] grille)
         {
+            int lignes = grille.GetLength(0);
+            int colonnes = grille.GetLength(1);
+
+            Console.Write(" ");
+            for (int j = 0; j < colonnes; j++)
+            {
+                Console.Write($"  {j} ");
+            }
             Console.WriteLine();
-            Console.WriteLine($" {grille[0, 0]}  |  {grille[0, 1]}  |  {grille[0, 2]}  |  {grille[0, 3]}  |  {grille[0, 4]}  |  {grille[0, 5]}  |  {grille[0, 6]}");
-            Console.WriteLine("    |     |     |     |     |     |");
-            Console.WriteLine("----+-----+-----+-----+-----+-----+----");
-            Console.WriteLine("    |     |     |     |     |     |");
-            Console.WriteLine($" {grille[1, 0]}  |  {grille[1, 1]}  |  {grille[1, 2]}  |  {grille[1, 3]}  |  {grille[1, 4]}  |  {grille[1, 5]}  |  {grille[1, 6]}");
-            Console.WriteLine("    |     |     |     |     |     |");
-            Console.WriteLine("----+-----+-----+-----+-----+-----+----");
-            Console.WriteLine("    |     |     |     |     |     |");
-            Console.WriteLine($" {grille[2, 0]}  |  {grille[2, 1]}  |  {grille[2, 2]}  |  {grille[2, 3]}  |  {grille[2, 4]}  |  {grille[2, 5]}  |  {grille[1, 6]}");
-            Console.WriteLine("    |     |     |     |     |     |");
-            Console.WriteLine("----+-----+-----+-----+-----+-----+----");
-            Console.WriteLine("    |     |     |     |     |     |");
-            Console.WriteLine($" {grille[3, 0]}  |  {grille[3, 1]}  |  {grille[3, 2]}  |  {grille[3, 3]}  |  {grille[3, 4]}  |  {grille[3, 5]}  |  {grille[1, 6]}");
-            Console.WriteLine("    |     |     |     |     |     |");
-            Console.WriteLine("----+-----+-----+-----+-----+-----+----");
+
+            for (int i = 0; i < lignes; i++)
+            {
+                Console.Write($"{i}");
+                for (int j = 0; j < colonnes; j++)
+                {
+                    Console.Write(" | " + grille[i, j]);
+                }
+                Console.WriteLine(" |");
+
+                if (i < lignes - 1)
+                {
+                    Console.Write("  ");
+                    for (int j = 0; j < colonnes; j++)
+                    {
+                        Console.Write("---+");
+                    }
+                    Console.WriteLine();
+                }
+            }
+            Console.WriteLine();
         }
 
-        public bool verifVictoire(char c) =>
-             grille[0, 0] == c && grille[1, 0] == c && grille[2, 0] == c && grille[3, 0] == c ||
-             grille[0, 1] == c && grille[1, 1] == c && grille[2, 1] == c && grille[3, 1] == c ||
-             grille[0, 2] == c && grille[1, 2] == c && grille[2, 2] == c && grille[3, 2] == c ||
-             grille[0, 3] == c && grille[1, 3] == c && grille[2, 3] == c && grille[3, 3] == c ||
-             grille[0, 4] == c && grille[1, 4] == c && grille[2, 4] == c && grille[3, 4] == c ||
-             grille[0, 5] == c && grille[1, 5] == c && grille[2, 5] == c && grille[3, 5] == c ||
-             grille[0, 6] == c && grille[1, 6] == c && grille[2, 6] == c && grille[3, 6] == c ||
-             grille[0, 0] == c && grille[0, 1] == c && grille[0, 2] == c && grille[0, 3] == c ||
-             grille[0, 1] == c && grille[0, 2] == c && grille[0, 3] == c && grille[0, 4] == c ||
-             grille[0, 2] == c && grille[0, 3] == c && grille[0, 3] == c && grille[0, 5] == c ||
-             grille[0, 3] == c && grille[0, 4] == c && grille[0, 5] == c && grille[0, 6] == c ||
-             grille[1, 0] == c && grille[1, 1] == c && grille[1, 2] == c && grille[1, 3] == c ||
-             grille[1, 1] == c && grille[1, 2] == c && grille[1, 3] == c && grille[1, 4] == c ||
-             grille[1, 2] == c && grille[1, 3] == c && grille[1, 4] == c && grille[1, 5] == c ||
-             grille[1, 4] == c && grille[1, 4] == c && grille[1, 5] == c && grille[1, 6] == c ||
-             grille[2, 0] == c && grille[2, 1] == c && grille[2, 2] == c && grille[2, 3] == c ||
-             grille[2, 1] == c && grille[2, 2] == c && grille[2, 3] == c && grille[2, 4] == c ||
-             grille[2, 2] == c && grille[2, 3] == c && grille[2, 3] == c && grille[2, 5] == c ||
-             grille[2, 3] == c && grille[2, 4] == c && grille[2, 5] == c && grille[2, 6] == c ||
-             grille[3, 0] == c && grille[3, 1] == c && grille[3, 2] == c && grille[3, 3] == c ||
-             grille[3, 1] == c && grille[3, 2] == c && grille[3, 3] == c && grille[3, 4] == c ||
-             grille[3, 2] == c && grille[3, 3] == c && grille[3, 4] == c && grille[3, 5] == c ||
-             grille[3, 3] == c && grille[3, 4] == c && grille[3, 5] == c && grille[3, 6] == c ||
-             grille[0, 0] == c && grille[1, 1] == c && grille[2, 2] == c && grille[3, 3] == c ||
-             grille[0, 1] == c && grille[1, 2] == c && grille[2, 3] == c && grille[3, 4] == c ||
-             grille[0, 2] == c && grille[1, 3] == c && grille[2, 4] == c && grille[3, 5] == c ||
-             grille[0, 3] == c && grille[1, 4] == c && grille[2, 5] == c && grille[3, 6] == c ||
-             grille[0, 3] == c && grille[1, 2] == c && grille[2, 1] == c && grille[3, 0] == c ||
-             grille[0, 4] == c && grille[1, 4] == c && grille[2, 2] == c && grille[3, 1] == c ||
-             grille[0, 5] == c && grille[1, 3] == c && grille[2, 3] == c && grille[3, 2] == c ||
-             grille[0, 6] == c && grille[1, 5] == c && grille[2, 4] == c && grille[3, 3] == c;
+        public bool verifVictoire(char c)
+        {
+            int lignes = grille.GetLength(0);
+            int colonnes = grille.GetLength(1);
 
-        public bool verifEgalite() =>
-            grille[0, 0] != ' ' && grille[0, 1] != ' ' && grille[0, 2] != ' ' && grille[0, 3] != ' ' && grille[0, 4] != ' ' && grille[0, 5] != ' ' && grille[0, 6] != ' ' &&
-            grille[1, 0] != ' ' && grille[1, 1] != ' ' && grille[1, 2] != ' ' && grille[1, 3] != ' ' && grille[1, 4] != ' ' && grille[1, 5] != ' ' && grille[1, 6] != ' ' &&
-            grille[2, 0] != ' ' && grille[2, 1] != ' ' && grille[1, 2] != ' ' && grille[2, 3] != ' ' && grille[2, 4] != ' ' && grille[2, 5] != ' ' && grille[2, 6] != ' ' &&
-            grille[3, 0] != ' ' && grille[3, 1] != ' ' && grille[3, 2] != ' ' && grille[3, 3] != ' ' && grille[3, 4] != ' ' && grille[3, 5] != ' ' && grille[3, 5] != ' ';
+            for (int i = 0; i < lignes; i++)
+            {
+                for (int j = 0; j < colonnes - 3; j++)
+                {
+                    if (grille[i, j] == c && grille[i, j + 1] == c && grille[i, j + 2] == c && grille[i, j + 3] == c)
+                        return true;
+                }
+            }
+
+            for (int i = 0; i < lignes - 3; i++)
+            {
+                for (int j = 0; j < colonnes; j++)
+                {
+                    if (grille[i, j] == c && grille[i + 1, j] == c && grille[i + 2, j] == c && grille[i + 3, j] == c)
+                        return true;
+                }
+            }
+
+            for (int i = 0; i < lignes - 3; i++)
+            {
+                for (int j = 0; j < colonnes - 3; j++)
+                {
+                    if (grille[i, j] == c && grille[i + 1, j + 1] == c && grille[i + 2, j + 2] == c && grille[i + 3, j + 3] == c)
+                        return true;
+                    if (j >= 3 && grille[i, j] == c && grille[i + 1, j - 1] == c && grille[i + 2, j - 2] == c && grille[i + 3, j - 3] == c)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+
+        public bool verifEgalite()
+        {
+            for (int i = 0; i < grille.GetLength(0); i++)
+            {
+                for (int j = 0; j < grille.GetLength(1); j++)
+                {
+                    if (grille[i, j] == ' ')
+                        return false; 
+                }
+            }
+            return true; 
+        }
+
 
 
         public void finPartie(string msg)
         {
             Console.Clear();
-            affichePlateau();
+            affichePlateau(grille);
             Console.WriteLine(msg);
         }
     }

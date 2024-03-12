@@ -31,7 +31,7 @@ namespace MorpionApp
                 {
                     if (tourDuJoueur)
                     {
-                        tourJoueur();
+                        TourJoueur('X');
                         if (verifVictoire('X'))
                         {
                             finPartie("Le joueur 1 à gagné !");
@@ -40,7 +40,7 @@ namespace MorpionApp
                     }
                     else
                     {
-                        tourJoueur2();
+                        TourJoueur('O');
                         if (verifVictoire('O'))
                         {
                             finPartie("Le joueur 2 à gagné !");
@@ -74,7 +74,7 @@ namespace MorpionApp
             }
         }
 
-        public void tourJoueur()
+        public void TourJoueur(char joueur)
         {
             var (row, column) = (0, 0);
             bool moved = false;
@@ -82,183 +82,124 @@ namespace MorpionApp
             while (!quiterJeu && !moved)
             {
                 Console.Clear();
-                affichePlateau();
+                affichePlateau(grille);
                 Console.WriteLine();
-                Console.WriteLine("Choisir une case valide est appuyer sur [Entrer]");
-                Console.SetCursorPosition(column * 6 + 1, row * 4 + 1);
+                Console.WriteLine($"Joueur {joueur}, choisir une case valide et appuyer sur [Entrer]");
+                int cursorLeft = (column * 4) + 2; 
+                int cursorTop = (row * 2) + 1;
 
-                switch (Console.ReadKey(true).Key)
+                Console.SetCursorPosition(cursorLeft, cursorTop);
+
+                var key = Console.ReadKey(true).Key;
+                switch (key)
                 {
                     case ConsoleKey.Escape:
                         quiterJeu = true;
                         Console.Clear();
-                        break;
+                        return;
 
                     case ConsoleKey.RightArrow:
-                        if (column >= 2)
-                        {
-                            column = 0;
-                        }
-                        else
-                        {
-                            column = column + 1;
-                        }
+                        column = column >= 2 ? 0 : column + 1;
                         break;
 
                     case ConsoleKey.LeftArrow:
-                        if (column <= 0)
-                        {
-                            column = 2;
-                        }
-                        else
-                        {
-                            column = column - 1;
-                        }
+                        column = column <= 0 ? 2 : column - 1;
                         break;
 
                     case ConsoleKey.UpArrow:
-                        if (row <= 0)
-                        {
-                            row = 2;
-                        }
-                        else
-                        {
-                            row = row - 1;
-                        }
+                        row = row <= 0 ? 2 : row - 1;
                         break;
 
                     case ConsoleKey.DownArrow:
-                        if (row >= 2)
-                        {
-                            row = 0;
-                        }
-                        else
-                        {
-                            row = row + 1;
-                        }
+                        row = row >= 2 ? 0 : row + 1;
                         break;
                     case ConsoleKey.Enter:
-                        if (grille[row, column] is ' ')
+                        if (grille[row, column] == ' ')
                         {
-                            grille[row, column] = 'X';
+                            grille[row, column] = joueur;
                             moved = true;
-                            quiterJeu = false;
                         }
                         break;
                 }
-
             }
         }
 
-        public void tourJoueur2()
-        {
-            var (row, column) = (0, 0);
-            bool moved = false;
 
-            while (!quiterJeu && !moved)
+        public void affichePlateau(char[,] grille)
+        {
+            int lignes = grille.GetLength(0);
+            int colonnes = grille.GetLength(1);
+
+            Console.Write(" ");
+            for (int j = 0; j < colonnes; j++)
             {
-                Console.Clear();
-                affichePlateau();
-                Console.WriteLine();
-                Console.WriteLine("Choisir une case valide est appuyer sur [Entrer]");
-                Console.SetCursorPosition(column * 6 + 1, row * 4 + 1);
-
-                switch (Console.ReadKey(true).Key)
-                {
-                    case ConsoleKey.Escape:
-                        quiterJeu = true;
-                        Console.Clear();
-                        break;
-
-                    case ConsoleKey.RightArrow:
-                        if (column >= 2)
-                        {
-                            column = 0;
-                        }
-                        else
-                        {
-                            column = column + 1;
-                        }
-                        break;
-
-                    case ConsoleKey.LeftArrow:
-                        if (column <= 0)
-                        {
-                            column = 2;
-                        }
-                        else
-                        {
-                            column = column - 1;
-                        }
-                        break;
-
-                    case ConsoleKey.UpArrow:
-                        if (row <= 0)
-                        {
-                            row = 2;
-                        }
-                        else
-                        {
-                            row = row - 1;
-                        }
-                        break;
-
-                    case ConsoleKey.DownArrow:
-                        if (row >= 2)
-                        {
-                            row = 0;
-                        }
-                        else
-                        {
-                            row = row + 1;
-                        }
-                        break;
-                    case ConsoleKey.Enter:
-                        if (grille[row, column] is ' ')
-                        {
-                            grille[row, column] = 'O';
-                            moved = true;
-                            quiterJeu = false;
-                        }
-                        break;
-                }
+                Console.Write($"  {j} ");
             }
-        }
-
-        public void affichePlateau()
-        {
             Console.WriteLine();
-            Console.WriteLine($" {grille[0, 0]}  |  {grille[0, 1]}  |  {grille[0, 2]}");
-            Console.WriteLine("    |     |");
-            Console.WriteLine("----+-----+----");
-            Console.WriteLine("    |     |");
-            Console.WriteLine($" {grille[1, 0]}  |  {grille[1, 1]}  |  {grille[1, 2]}");
-            Console.WriteLine("    |     |");
-            Console.WriteLine("----+-----+----");
-            Console.WriteLine("    |     |");
-            Console.WriteLine($" {grille[2, 0]}  |  {grille[1, 1]}  |  {grille[0, 2]}");
+
+            for (int i = 0; i < lignes; i++)
+            {
+                Console.Write($"{i}");
+                for (int j = 0; j < colonnes; j++)
+                {
+                    Console.Write(" | " + grille[i, j]);
+                }
+                Console.WriteLine(" |");
+
+                if (i < lignes - 1)
+                {
+                    Console.Write("  ");
+                    for (int j = 0; j < colonnes; j++)
+                    {
+                        Console.Write("---+");
+                    }
+                    Console.WriteLine();
+                }
+            }
+            Console.WriteLine();
         }
 
-        public bool verifVictoire(char c) =>
-             grille[0, 0] == c && grille[1, 0] == c && grille[2, 0] == c ||
-             grille[0, 1] == c && grille[1, 1] == c && grille[2, 1] == c ||
-             grille[0, 2] == c && grille[1, 2] == c && grille[2, 2] == c ||
-             grille[0, 0] == c && grille[1, 1] == c && grille[2, 2] == c ||
-             grille[1, 0] == c && grille[1, 1] == c && grille[1, 2] == c ||
-             grille[2, 0] == c && grille[2, 1] == c && grille[2, 2] == c ||
-             grille[0, 0] == c && grille[1, 1] == c && grille[2, 2] == c ||
-             grille[2, 0] == c && grille[1, 1] == c && grille[0, 2] == c;
 
-        public bool verifEgalite() =>
-            grille[0, 0] != ' ' && grille[1, 0] != ' ' && grille[2, 0] != ' ' &&
-            grille[0, 1] != ' ' && grille[1, 1] != ' ' && grille[2, 1] != ' ' &&
-            grille[0, 2] != ' ' && grille[1, 2] != ' ' && grille[2, 2] != ' ';
+        public bool verifVictoire(char c)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (grille[i, 0] == c && grille[i, 1] == c && grille[i, 2] == c)
+                    return true;
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                if (grille[0, i] == c && grille[1, i] == c && grille[2, i] == c)
+                    return true;
+            }
+            if (grille[0, 0] == c && grille[1, 1] == c && grille[2, 2] == c)
+                return true;
+            if (grille[0, 2] == c && grille[1, 1] == c && grille[2, 0] == c)
+                return true;
+
+            return false;
+        }
+
+
+        public bool verifEgalite()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (grille[i, j] == ' ')
+                        return false;
+                }
+            }
+            return true;
+        }
+
 
 
         public void finPartie(string msg)
         {
             Console.Clear();
-            affichePlateau();
+            affichePlateau(grille);
             Console.WriteLine(msg);
         }
     }
