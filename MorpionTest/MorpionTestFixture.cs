@@ -53,6 +53,27 @@ namespace MorpionTest
                 morpion.grille[i, 2 - i] = joueur;
             }
         }
+
+        public void RemplirGrilleEgalite()
+        {
+            char[,] grilleEgalite = new char[,] {
+        { 'X', 'O', 'X' },
+        { 'X', 'X', 'O' },
+        { 'O', 'X', 'O' }
+    };
+            morpion.grille = grilleEgalite;
+        }
+
+        public void RemplirGrilleNonComplete()
+        {
+            char[,] grilleNonComplete = new char[,] {
+        { 'X', 'O', 'X' },
+        { ' ', 'X', 'O' },
+        { 'O', 'X', ' ' }
+    };
+            morpion.grille = grilleNonComplete;
+        }
+
     }
 }
 

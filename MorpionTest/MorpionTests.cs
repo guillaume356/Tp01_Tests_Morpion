@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MorpionApp;
+using Xunit;
 
 namespace MorpionTest
 {
@@ -93,6 +94,22 @@ namespace MorpionTest
 
             bool victoire = _fixture.morpion.verifVictoire('X');
             Assert.False(victoire, "Ne devrait pas détecter une victoire avec moins de trois symboles alignés.");
+        }
+
+        [Fact]
+        public void VerifEgalite_GrillePleineSansVictoire_RetourneVrai()
+        {
+            _fixture.RemplirGrilleEgalite();
+            bool egalite = _fixture.morpion.verifEgalite();
+            Assert.True(egalite, "Devrait retourner vrai pour une grille pleine sans victoire.");
+        }
+
+        [Fact]
+        public void VerifEgalite_GrilleNonComplete_RetourneFaux()
+        {
+            _fixture.RemplirGrilleNonComplete();
+            bool egalite = _fixture.morpion.verifEgalite();
+            Assert.False(egalite, "Devrait retourner faux pour une grille non complète.");
         }
 
 
