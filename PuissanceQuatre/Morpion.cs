@@ -10,26 +10,21 @@ namespace MorpionApp
     public class Morpion
     {
         private IGameView view;
+        private IGrille grilleJeu;
         public bool quiterJeu = false;
         public bool tourDuJoueur = true;
-        public char[,] grille;
 
         public Morpion(IGameView gameView)
         {
             view = gameView;
-            grille = new char[3, 3];
+            grilleJeu = new Grille(3, 3);
         }
 
         public void BoucleJeu()
         {
             while (!quiterJeu)
             {
-                grille = new char[3, 3]
-                {
-                    { ' ', ' ', ' '},
-                    { ' ', ' ', ' '},
-                    { ' ', ' ', ' '},
-                };
+                grilleJeu.InitialiserGrille(); 
                 while (!quiterJeu)
                 {
                     if (tourDuJoueur)
@@ -37,7 +32,7 @@ namespace MorpionApp
                         TourJoueur('X');
                         if (verifVictoire('X'))
                         {
-                            finPartie("Le joueur 1 à gagné !");
+                            finPartie("Le joueur 1 a gagné !");
                             break;
                         }
                     }
@@ -46,7 +41,7 @@ namespace MorpionApp
                         TourJoueur('O');
                         if (verifVictoire('O'))
                         {
-                            finPartie("Le joueur 2 à gagné !");
+                            finPartie("Le joueur 2 a gagné !");
                             break;
                         }
                     }
@@ -57,10 +52,10 @@ namespace MorpionApp
                         break;
                     }
                 }
+
                 if (!quiterJeu)
                 {
                     view.DisplayLineBreakMessage("Appuyer sur [Echap] pour quitter, [Entrer] pour rejouer.");
-                GetKey:
                     switch (view.GetUserInput())
                     {
                         case ConsoleKey.Enter:
@@ -69,11 +64,8 @@ namespace MorpionApp
                             quiterJeu = true;
                             view.ClearScreen();
                             break;
-                        default:
-                            goto GetKey;
                     }
                 }
-
             }
         }
 
@@ -85,8 +77,7 @@ namespace MorpionApp
             while (!quiterJeu && !moved)
             {
                 view.ClearScreen();
-                affichePlateau(grille);
-                view.DisplayLineBreak();
+                affichePlateau(); 
                 view.DisplayLineBreakMessage($"Joueur {joueur}, choisir une case valide et appuyer sur [Entrer]");
                 int cursorLeft = (column * 4) + 2;
                 int cursorTop = (row * 2) + 1;
@@ -100,26 +91,22 @@ namespace MorpionApp
                         quiterJeu = true;
                         view.ClearScreen();
                         return;
-
                     case ConsoleKey.RightArrow:
                         column = column >= 2 ? 0 : column + 1;
                         break;
-
                     case ConsoleKey.LeftArrow:
                         column = column <= 0 ? 2 : column - 1;
                         break;
-
                     case ConsoleKey.UpArrow:
                         row = row <= 0 ? 2 : row - 1;
                         break;
-
                     case ConsoleKey.DownArrow:
                         row = row >= 2 ? 0 : row + 1;
                         break;
                     case ConsoleKey.Enter:
-                        if (grille[row, column] == ' ')
+                        if (grilleJeu.GetValeurCase(row, column) == ' ')
                         {
-                            grille[row, column] = joueur;
+                            grilleJeu.SetValeurCase(row, column, joueur);
                             moved = true;
                         }
                         break;
@@ -127,11 +114,10 @@ namespace MorpionApp
             }
         }
 
-
-        public void affichePlateau(char[,] grille)
+        public void affichePlateau()
         {
-            int lignes = grille.GetLength(0);
-            int colonnes = grille.GetLength(1);
+            int lignes = grilleJeu.Lignes;
+            int colonnes = grilleJeu.Colonnes;
 
             view.Display(" ");
             for (int j = 0; j < colonnes; j++)
@@ -145,10 +131,9 @@ namespace MorpionApp
                 view.Display($"{i}");
                 for (int j = 0; j < colonnes; j++)
                 {
-                    view.Display(" | " + grille[i, j]);
+                    view.Display($" | {grilleJeu.GetValeurCase(i, j)}");
                 }
                 view.DisplayLineBreakMessage(" |");
-
                 if (i < lignes - 1)
                 {
                     view.Display("  ");
@@ -163,34 +148,39 @@ namespace MorpionApp
         }
 
 
+
         public bool verifVictoire(char c)
         {
             for (int i = 0; i < 3; i++)
             {
-                if (grille[i, 0] == c && grille[i, 1] == c && grille[i, 2] == c)
+                if (grilleJeu.GetValeurCase(i, 0) == c && grilleJeu.GetValeurCase(i, 1) == c && grilleJeu.GetValeurCase(i, 2) == c)
                     return true;
             }
             for (int i = 0; i < 3; i++)
             {
-                if (grille[0, i] == c && grille[1, i] == c && grille[2, i] == c)
+                if (grilleJeu.GetValeurCase(0, i) == c && grilleJeu.GetValeurCase(1, i) == c && grilleJeu.GetValeurCase(2, i) == c)
                     return true;
             }
-            if (grille[0, 0] == c && grille[1, 1] == c && grille[2, 2] == c)
+            if (grilleJeu.GetValeurCase(0, 0) == c && grilleJeu.GetValeurCase(1, 1) == c && grilleJeu.GetValeurCase(2, 2) == c)
                 return true;
-            if (grille[0, 2] == c && grille[1, 1] == c && grille[2, 0] == c)
+            if (grilleJeu.GetValeurCase(0, 2) == c && grilleJeu.GetValeurCase(1, 1) == c && grilleJeu.GetValeurCase(2, 0) == c)
                 return true;
 
             return false;
         }
 
 
+
         public bool verifEgalite()
         {
-            for (int i = 0; i < 3; i++)
+            int lignes = grilleJeu.Lignes;
+            int colonnes = grilleJeu.Colonnes;
+
+            for (int i = 0; i < lignes; i++)
             {
-                for (int j = 0; j < 3; j++)
+                for (int j = 0; j < colonnes; j++)
                 {
-                    if (grille[i, j] == ' ')
+                    if (grilleJeu.GetValeurCase(i, j) == ' ')
                         return false;
                 }
             }
@@ -202,7 +192,7 @@ namespace MorpionApp
         public void finPartie(string msg)
         {
             view.ClearScreen();
-            affichePlateau(grille);
+            affichePlateau();
             view.DisplayLineBreakMessage(msg);
         }
     }
