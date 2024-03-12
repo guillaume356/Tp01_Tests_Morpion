@@ -61,6 +61,23 @@ namespace MorpionTest
             Assert.True(victoire, $"Le joueur {joueur} devrait avoir gagné sur la diagonale inverse.");
         }
 
+        [Fact]
+        public void VerifEgalite_GrillePleineSansGagnant_RetourneVrai()
+        {
+            _fixture.ResetGrille();
+            _fixture.RemplirGrilleSansGagnant();
+            bool egalite = _fixture.puissanceQuatre.verifEgalite();
+            Assert.True(egalite, "Doit retourner vrai pour une grille pleine sans gagnant.");
+        }
+
+        [Fact]
+        public void VerifEgalite_GrilleVide_RetourneFaux()
+        {
+            _fixture.ResetGrille();
+            bool egalite = _fixture.puissanceQuatre.verifEgalite();
+            Assert.True(egalite, "Doit retourner faux pour une grille vide.");
+        }
+
 
     }
 }

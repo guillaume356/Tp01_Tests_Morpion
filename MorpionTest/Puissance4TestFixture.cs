@@ -32,7 +32,7 @@ namespace MorpionTest
 
         public void SetLigneVictorieuse(char joueur, int ligne)
         {
-            for (int colonne = 0; colonne < 4; colonne++) 
+            for (int colonne = 0; colonne < 4; colonne++)
             {
                 puissanceQuatre.grille[ligne, colonne] = joueur;
             }
@@ -51,6 +51,21 @@ namespace MorpionTest
             for (int i = 0; i < 4; i++)
             {
                 puissanceQuatre.grille[3 - i, i] = joueur;
+            }
+        }
+
+        public void RemplirGrilleSansGagnant()
+        {
+            char[] joueurs = { 'X', 'O' };
+            int joueurIndex = 0;
+
+            for (int ligne = 0; ligne < 4; ligne++)
+            {
+                for (int colonne = 0; colonne < 7; colonne++)
+                {
+                    puissanceQuatre.grille[ligne, colonne] = joueurs[joueurIndex];
+                    joueurIndex = 1 - joueurIndex;
+                }
             }
         }
     }
