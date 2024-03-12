@@ -32,7 +32,7 @@ namespace MorpionApp
                 {
                     if (tourDuJoueur)
                     {
-                        tourJoueur();
+                        TourJoueur('X');
                         if (verifVictoire('X'))
                         {
                             finPartie("Le joueur 1 à gagné !");
@@ -41,7 +41,7 @@ namespace MorpionApp
                     }
                     else
                     {
-                        tourJoueur2();
+                        TourJoueur('O');
                         if (verifVictoire('O'))
                         {
                             finPartie("Le joueur 2 à gagné !");
@@ -75,9 +75,9 @@ namespace MorpionApp
             }
         }
 
-        public void tourJoueur()
+        public void TourJoueur(char joueur)
         {
-            var (row, column) = (0, 0);
+            int column = 0;
             bool moved = false;
 
             while (!quiterJeu && !moved)
@@ -85,180 +85,45 @@ namespace MorpionApp
                 Console.Clear();
                 affichePlateau();
                 Console.WriteLine();
-                Console.WriteLine("Choisir une case valide est appuyer sur [Entrer]");
-                Console.SetCursorPosition(column * 6 + 1, row * 4 + 1);
+                Console.WriteLine($"Joueur {joueur}, choisir une colonne et appuyer sur [Entrer]");
+                Console.SetCursorPosition(column * 6 + 1, 0);
 
-                switch (Console.ReadKey(true).Key)
+                var key = Console.ReadKey(true).Key;
+                switch (key)
                 {
                     case ConsoleKey.Escape:
                         quiterJeu = true;
                         Console.Clear();
-                        break;
+                        return;
 
                     case ConsoleKey.RightArrow:
-                        if (column >= 6)
-                        {
-                            column = 0;
-                        }
-                        else
-                        {
-                            column = column + 1;
-                        }
+                        column = column >= 6 ? 0 : column + 1;
                         break;
 
                     case ConsoleKey.LeftArrow:
-                        if (column <= 0)
-                        {
-                            column = 6;
-                        }
-                        else
-                        {
-                            column = column - 1;
-                        }
+                        column = column <= 0 ? 6 : column - 1;
                         break;
 
-                    //case ConsoleKey.UpArrow:
-                    //    if (row <= 0)
-                    //    {
-                    //        row = 3;
-                    //    }
-                    //    else
-                    //    {
-                    //        row = row - 1;
-                    //    }
-                    //    break;
-
-                    //case ConsoleKey.DownArrow:
-                    //    if (row >= 3)
-                    //    {
-                    //        row = 0;
-                    //    }
-                    //    else
-                    //    {
-                    //        row = row + 1;
-                    //    }
-                    //    break;
                     case ConsoleKey.Enter:
-                        while (row <= 3)
+                        for (int row = grille.GetLength(0) - 1; row >= 0; row--) 
                         {
-                            row = row + 1;
-                            if (row >= 3)
+                            if (grille[row, column] == ' ') 
                             {
-                                break;
+                                grille[row, column] = joueur; 
+                                moved = true;
+                                break; 
                             }
                         }
-                        while (grille[row, column] is 'X' or 'O')
+                        if (!moved)
                         {
-                            if (row == 0)
-                            {
-                                break;
-                            }
-
-                            row = row - 1;
-                        }
-                        if(grille[row, column] is ' ')
-                        {
-                            grille[row, column] = 'X';
-                            moved = true;
-                            quiterJeu = false;
-                        }
-                        break;
-                }
-
-            }
-        }
-
-        public void tourJoueur2()
-        {
-            var (row, column) = (0, 0);
-            bool moved = false;
-
-            while (!quiterJeu && !moved)
-            {
-                Console.Clear();
-                affichePlateau();
-                Console.WriteLine();
-                Console.WriteLine("Choisir une case valide est appuyer sur [Entrer]");
-                Console.SetCursorPosition(column * 6 + 1, row * 4 + 1);
-
-                switch (Console.ReadKey(true).Key)
-                {
-                    case ConsoleKey.Escape:
-                        quiterJeu = true;
-                        Console.Clear();
-                        break;
-
-                    case ConsoleKey.RightArrow:
-                        if (column >= 6)
-                        {
-                            column = 0;
-                        }
-                        else
-                        {
-                            column = column + 1;
-                        }
-                        break;
-
-                    case ConsoleKey.LeftArrow:
-                        if (column <= 0)
-                        {
-                            column = 6;
-                        }
-                        else
-                        {
-                            column = column - 1;
-                        }
-                        break;
-
-                    //case ConsoleKey.UpArrow:
-                    //    if (row <= 0)
-                    //    {
-                    //        row = 3;
-                    //    }
-                    //    else
-                    //    {
-                    //        row = row - 1;
-                    //    }
-                    //    break;
-
-                    //case ConsoleKey.DownArrow:
-                    //    if (row >= 3)
-                    //    {
-                    //        row = 0;
-                    //    }
-                    //    else
-                    //    {
-                    //        row = row + 1;
-                    //    }
-                    //    break;
-                    case ConsoleKey.Enter:
-                        while (row <= 3)
-                        {
-                            row = row + 1;
-                            if (row >= 3)
-                            {
-                                break;
-                            }
-                        }
-                        while (grille[row, column] is 'X' or 'O')
-                        {
-                            if(row == 0)
-                            {
-                                break;
-                            }
-
-                            row = row - 1;
-                        }
-                        if (grille[row, column] is ' ')
-                        {
-                            grille[row, column] = 'O';
-                            moved = true;
-                            quiterJeu = false;
+                            Console.WriteLine("Colonne pleine. Choisissez une autre colonne.");
+                            Console.ReadKey(true); 
                         }
                         break;
                 }
             }
         }
+
 
         public void affichePlateau()
         {
