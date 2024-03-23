@@ -1,49 +1,14 @@
-# Dossiers de build et de binaires
-bin/
-obj/
-out/
-
-# Fichiers de configurations Visual Studio
-.vs/
-.vscode/
-*.user
-*.userosscache
-*.suo
-*.userprefs
-*.ds_store
-*.idea/
-
-# Autres fichiers et dossiers à ignorer
-*.nupkg
-*ReSharper*
-*ReSharperClt*
-*.ncrunch*
-*.DotSettings
-*.vspscc
-*_i.c
-*_p.c
-*_h.h
-*.ilk
-*.meta
-*.log
-*.pch
-*.pdb
-*.pgc
-*.pgd
-*.rsp
-*.sbr
-*.tlb
-*.tli
-*.tlh
-*.tmp
-*.tmp_proj
-*.log
-*.vspscc
-*.vssscc
-*.userprefs
-*.csproj.DotSettings.user
-*.testsettings
-*.vsmdi
-*.cache
-*.csproj.FileListAbsolute.txt
-*.csprojAssemblyReference.cache
+Coordinateur : ++
+Shaper :  -
+Implementer : --
+Completer Finisher : --
+/Tp3/CreditImmobilierTests/CreditImmobilierTests/obj
+/Tp3/CreditImmobilierTests/.vs/CreditImmobilierTests
+/MorpionTest/bin/Debug/net8.0
+/Tp3/CreditImmobilierTests/CreditImmobilier/obj
+/Tp3/CreditImmobilierTests/CreditImmobilier/bin/Debug/net8.0
+/Tp3/CreditImmobilierTests/CreditImmobilierTests/bin/Debug/net8.0
+/Tp3/CreditImmobilierTests/.vs/ProjectEvaluation
+/Tp3/Tests et Validation - S3 - Simulateur crédit immobilier en TDD.pdf
+/MorpionTest/obj/Debug/net8.0
+/PuissanceQuatre/.vs/MorpionApp
