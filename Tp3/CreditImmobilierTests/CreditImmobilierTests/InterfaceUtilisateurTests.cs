@@ -6,18 +6,16 @@ namespace CreditImmobilierTests
 {
     public class InterfaceUtilisateurTests
     {
-        [Fact]
-        public void AfficheMessageBienvenue_AfficheMessageCorrect()
+        [Theory]
+        [InlineData(new string[] { "100000", "240", "1.5" }, true)] // Cas valide
+        [InlineData(new string[] { "100000", "240" }, false)] // Moins de 3 arguments
+        [InlineData(new string[] { "100000", "240", "1.5", "extra" }, false)] // Plus de 3 arguments
+        public void VerifierArguments_NombreArgumentsCorrect(string[] args, bool expected)
         {
-            // Arranger
             var consoleMock = new Mock<IConsole>();
             var interfaceUtilisateur = new InterfaceUtilisateur(consoleMock.Object);
-
-            // Agir
-            interfaceUtilisateur.AfficheMessageBienvenue();
-
-            // Assert
-            consoleMock.Verify(x => x.WriteLine("Bonjour, Bienvenue dans votre simulateur de crédit immobilier :) Veuillez entrer le montant que vous souhaitez emprunter"), Times.Once());
+            var resultat = interfaceUtilisateur.VerifierArguments(args);
+            Assert.Equal(expected, resultat);
         }
     }
 }

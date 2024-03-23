@@ -15,9 +15,9 @@ namespace CreditImmobilier
             this.console = console;
         }
 
-        public void AfficheMessageBienvenue()
+        public bool VerifierArguments(string[] args)
         {
-            console.WriteLine("Bonjour, Bienvenue dans votre simulateur de crédit immobilier :) Veuillez entrer le montant que vous souhaitez emprunter");
+            return args.Length != 3;
         }
     }
 }

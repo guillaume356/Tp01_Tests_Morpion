@@ -8,7 +8,10 @@ namespace CreditImmobilier
 {
     public class ConsoleWrapper : IConsole
     {
-        public void WriteLine(string message) => Console.WriteLine(message);
+        public void WriteLine(string message)
+        {
+            Console.WriteLine(message);
+        }
         public string ReadLine() => Console.ReadLine();
     }
 }

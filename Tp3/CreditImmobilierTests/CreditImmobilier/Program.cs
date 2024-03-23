@@ -8,8 +8,14 @@ namespace CreditImmobilier
         {
             IConsole consoleWrapper = new ConsoleWrapper();
             InterfaceUtilisateur interfaceUtilisateur = new InterfaceUtilisateur(consoleWrapper);
+            
+                if (interfaceUtilisateur.VerifierArguments(args))
+                {
+                    consoleWrapper.WriteLine("Usage: RealEstateCredit <amount> <duration in months> <nominal rate>");
+                    return;
+                }
 
-            interfaceUtilisateur.AfficheMessageBienvenue();
         }
     }
+
 }
