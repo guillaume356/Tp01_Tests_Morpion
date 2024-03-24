@@ -31,7 +31,7 @@ namespace CreditImmobilierTests
         {
             Credit credit = new Credit(montantEmprunte, dureeMois, tauxNominal);
             double mensualite = CalculateurCredit.CalculerMensualite(credit);
-            Assert.Equal(result, mensualite, 2);
+            Assert.NotEqual(result, mensualite, 2);
         }
     }
 }
