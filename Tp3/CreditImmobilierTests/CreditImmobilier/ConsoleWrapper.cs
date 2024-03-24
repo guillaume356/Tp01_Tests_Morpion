@@ -12,6 +12,9 @@ namespace CreditImmobilier
         {
             Console.WriteLine(message);
         }
-        public string ReadLine() => Console.ReadLine();
+        public string ReadLine()
+        {
+            return Console.ReadLine() ?? string.Empty; 
+        }
     }
 }
