@@ -17,6 +17,15 @@ namespace CreditImmobilier
 
         }
 
+        public static double CalculerCoutTotal(Credit credit)
+        {
+            double mensualite = CalculerMensualite(credit);
+            double coutTotal = mensualite * credit.DureeMois;
+            return coutTotal;
+        }
+
+
+
     }
 
 }

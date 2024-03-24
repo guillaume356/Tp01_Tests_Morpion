@@ -24,7 +24,7 @@ namespace CreditImmobilierTests
         [InlineData(new string[] { "100000", "240", "1" }, true)]
         [InlineData(new string[] { "100000", "abc", "1.5" }, false)]
         [InlineData(new string[] { "100000", "!@#", "1.5" }, false)]
-        public void EstUnNombreValide_TousElementsSontNombres(string[] args, bool expected)
+        public void SontdesNombreValide_TousElementsSontNombres(string[] args, bool expected)
         {
             var resultat = InterfaceUtilisateur.SontdesNombreValide(args);
             Assert.Equal(expected, resultat);
