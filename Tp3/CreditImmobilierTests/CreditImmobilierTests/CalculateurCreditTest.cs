@@ -64,5 +64,30 @@ namespace CreditImmobilierTests
             
             Assert.NotEqual(coutTotalAttendu, coutTotalCalcule); 
         }
+
+
+
+        [Theory]
+        [InlineData(1, 100000, 240, 1.5, 357.55, 99642.45)] 
+        public void GenererPlanAmortissement_RetourneMensualiteAttendue(
+           int numeroMensualite,
+           double montantEmprunte,
+           int dureeMois,
+           double tauxNominal,
+           double capitalRembourseAttendu,
+           double capitalRestantDuAttendu)
+        {
+            
+            var credit = new Credit(montantEmprunte, dureeMois, tauxNominal);
+            var mensualites = CalculateurCredit.GenererPlanAmortissement(credit);
+
+            
+            var mensualiteTestee = mensualites.FirstOrDefault(m => m.Numero == numeroMensualite);
+
+            
+            Assert.NotNull(mensualiteTestee);
+            Assert.Equal(capitalRembourseAttendu, mensualiteTestee.CapitalRembourse, 2);
+            Assert.Equal(capitalRestantDuAttendu, mensualiteTestee.CapitalRestantDu, 2);
+        }
     }
 }

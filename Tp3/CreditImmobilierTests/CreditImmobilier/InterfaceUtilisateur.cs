@@ -26,7 +26,7 @@ namespace CreditImmobilier
             var culture = CultureInfo.InvariantCulture;
             foreach (var arg in args)
             {
-                if (!double.TryParse(arg, NumberStyles.Any, culture, out _))
+                if (!double.TryParse(arg, NumberStyles.Any, culture, out double number) || number < 0)
                 {
                     return false;
                 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace CreditImmobilier
@@ -7,31 +8,29 @@ namespace CreditImmobilier
     {
         static void Main(string[] args)
         {
-            IConsole consoleWrapper = new ConsoleWrapper();
-            InterfaceUtilisateur interfaceUtilisateur = new InterfaceUtilisateur(consoleWrapper);
+            IConsole console = new ConsoleWrapper();
 
-            if (!InterfaceUtilisateur.VerifierArguments(args))
+            try
             {
-                consoleWrapper.WriteLine("Usage: dotnet run <montantEmprunte> <dureeMois> <tauxNominal>");
-                return;
-            }
+                InputHandler inputHandler = new InputHandler(args);
+                double montant = inputHandler.InputMontant();
+                int duree = inputHandler.InputDuree();
+                double taux = double.Parse(args[2], CultureInfo.InvariantCulture);
+             
+                Credit credit = new Credit(montant, duree, taux);
+                List<Mensualite> mensualites = CalculateurCredit.GenererPlanAmortissement(credit);
+                double coutTotal = CalculateurCredit.CalculerCoutTotal(credit);
+              
+                string filePath = "mensualites.csv";
+                CreateurCSV.GenererCSV(filePath, mensualites, coutTotal);
 
-            if (!InterfaceUtilisateur.SontdesNombreValide(args))
+                console.WriteLine($"Fichier CSV généré avec succès : {filePath}");
+            }
+            catch (ArgumentException ex)
             {
-                consoleWrapper.WriteLine("Veuillez vérifier que les trois arguments soient des nombres valides.");
-                return;
-            }
-
-            double montantEmprunte = double.Parse(args[0], CultureInfo.InvariantCulture);
-            int dureeMois = int.Parse(args[1], CultureInfo.InvariantCulture);
-            double tauxNominal = double.Parse(args[2], CultureInfo.InvariantCulture);
-
-            Credit credit = new Credit(montantEmprunte, dureeMois, tauxNominal);
-            double mensualite = CalculateurCredit.CalculerMensualite(credit);
-
-            consoleWrapper.WriteLine($"La mensualité pour votre prêt est de: {mensualite} euros.");
+                console.WriteLine($"Erreur: {ex.Message}");
+            }  
+ 
         }
     }
-    
-
 }

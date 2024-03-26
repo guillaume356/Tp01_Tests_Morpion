@@ -24,6 +24,36 @@ namespace CreditImmobilier
             return coutTotal;
         }
 
+        public static List<Mensualite> GenererPlanAmortissement(Credit credit)
+        {
+            List<Mensualite> planAmortissement = new List<Mensualite>();
+            double capitalRestant = credit.MontantEmprunte;
+            double tauxMensuel = credit.TauxNominal / 12 / 100;
+            double mensualite = CalculerMensualite(credit);
+
+            for (int i = 1; i <= credit.DureeMois; i++)
+            {
+                double interets = capitalRestant * tauxMensuel;
+                double capitalRembourse = mensualite - interets;
+
+                if (capitalRestant < mensualite)
+                {
+                    capitalRembourse = capitalRestant;
+                    mensualite = capitalRembourse + interets;
+                }
+
+                capitalRestant -= capitalRembourse;
+
+                if (capitalRestant < 0) capitalRestant = 0;
+
+                planAmortissement.Add(new Mensualite(i, capitalRembourse, capitalRestant));
+            }
+
+
+            return planAmortissement;
+        }
+
+
 
 
     }
