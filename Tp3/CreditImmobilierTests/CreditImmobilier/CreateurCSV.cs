@@ -16,7 +16,7 @@ namespace CreditImmobilier
         {
             StringBuilder csvContent = new StringBuilder();
             double coutTotal = coutTotalInitial;
-
+            double capitalRembourseCumulatif = 0;
     
             csvContent.AppendLine($"Cout total du credit;{coutTotalInitial.ToString("F2", CultureInfo.InvariantCulture)}");
             csvContent.AppendLine("Numero;Capital Rembourse;Capital Restant Du;Amortissement;Interet;Mensualite;Cout Total");
@@ -26,12 +26,14 @@ namespace CreditImmobilier
                 coutTotal -= mensualite.MensualiteTotal;
 
                 StringBuilder line = new StringBuilder();
+
+                capitalRembourseCumulatif += mensualite.CapitalRembourse;
+
                 line.Append($"{mensualite.Numero};");
-                line.Append($"{mensualite.CapitalRembourse.ToString("F2", CultureInfo.InvariantCulture)};");
-                line.Append($"{mensualite.CapitalRestantDu.ToString("F2", CultureInfo.InvariantCulture)};");
-                line.Append($"{mensualite.CapitalRembourse.ToString("F2", CultureInfo.InvariantCulture)};"); 
-                line.Append($"{mensualite.Interet.ToString("F2", CultureInfo.InvariantCulture)};");
-                line.Append($"{mensualite.MensualiteTotal.ToString("F2", CultureInfo.InvariantCulture)};");
+                line.Append(capitalRembourseCumulatif.ToString("F2", CultureInfo.InvariantCulture) + ";");
+                line.Append(mensualite.CapitalRestantDu.ToString("F2", CultureInfo.InvariantCulture) + ";");
+                line.Append(mensualite.Interet.ToString("F2", CultureInfo.InvariantCulture) + ";");
+                line.Append(mensualite.MensualiteTotal.ToString("F2", CultureInfo.InvariantCulture) + ";");
                 line.Append($"{coutTotal.ToString("F2", CultureInfo.InvariantCulture)}");
         
                 csvContent.AppendLine(line.ToString());
