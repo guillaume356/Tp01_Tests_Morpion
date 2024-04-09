@@ -9,18 +9,22 @@ namespace CreditImmobilier
         {
             StringBuilder csvContent = new StringBuilder();
 
-            csvContent.AppendLine($"Coût total du crédit,{coutTotal.ToString("F2", CultureInfo.InvariantCulture)}");
+            csvContent.AppendLine($"Cout total du credit;{coutTotal.ToString("F2", CultureInfo.InvariantCulture)}");
 
-            csvContent.AppendLine("Numéro de la mensualité,Capital remboursé,Capital restant dû");
+            csvContent.AppendLine("Numero;Capital Rembourse;Capital Restant Du;Amortissement;Interet;Mensualite;Cout Total");
 
 
             foreach (var mensualite in mensualites)
             {
-                string line = string.Format("{0},{1},{2}",
-                    mensualite.Numero,
-                    mensualite.CapitalRembourse.ToString("F2", CultureInfo.InvariantCulture),
-                    mensualite.CapitalRestantDu.ToString("F2", CultureInfo.InvariantCulture));
-                csvContent.AppendLine(line);
+                StringBuilder line = new StringBuilder();
+                line.Append(mensualite.Numero.ToString(CultureInfo.InvariantCulture) + ";");
+                line.Append(mensualite.CapitalRembourse.ToString("F2", CultureInfo.InvariantCulture) + ";");
+                line.Append(mensualite.CapitalRestantDu.ToString("F2", CultureInfo.InvariantCulture) + ";");
+                line.Append(mensualite.CapitalRembourse.ToString("F2", CultureInfo.InvariantCulture) + ";");
+                line.Append(mensualite.Interet.ToString("F2", CultureInfo.InvariantCulture) + ";");
+                line.Append(mensualite.MensualiteTotal.ToString("F2", CultureInfo.InvariantCulture) + ";");
+                line.Append(coutTotal.ToString("F2", CultureInfo.InvariantCulture));
+                csvContent.AppendLine(line.ToString());
             }
 
             File.WriteAllText(filePath, csvContent.ToString());

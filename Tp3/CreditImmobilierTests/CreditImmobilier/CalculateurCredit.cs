@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace CreditImmobilier
 {
@@ -17,6 +13,7 @@ namespace CreditImmobilier
 
         }
 
+
         public static double CalculerCoutTotal(Credit credit)
         {
             double mensualite = CalculerMensualite(credit);
@@ -29,29 +26,43 @@ namespace CreditImmobilier
             List<Mensualite> planAmortissement = new List<Mensualite>();
             double capitalRestant = credit.MontantEmprunte;
             double tauxMensuel = credit.TauxNominal / 12 / 100;
-            double mensualite = CalculerMensualite(credit);
+            double mensualiteCalculee = CalculerMensualite(credit);
 
-            for (int i = 1; i <= credit.DureeMois; i++)
+            for (int mois = 1; mois <= credit.DureeMois; mois++)
             {
-                double interets = capitalRestant * tauxMensuel;
-                double capitalRembourse = mensualite - interets;
+                double interetPourLeMois = capitalRestant * tauxMensuel;
+                double capitalRemboursePourLeMois = mensualiteCalculee - interetPourLeMois;
 
-                if (capitalRestant < mensualite)
+                // Ajustement pour la dernière mensualité
+                if (mois == credit.DureeMois)
                 {
-                    capitalRembourse = capitalRestant;
-                    mensualite = capitalRembourse + interets;
+                    capitalRemboursePourLeMois += capitalRestant - capitalRemboursePourLeMois;
                 }
 
-                capitalRestant -= capitalRembourse;
+                capitalRestant -= capitalRemboursePourLeMois;
 
-                if (capitalRestant < 0) capitalRestant = 0;
+                // Ajout de la sécurité pour éviter un capital restant négatif
+                if (capitalRestant < 0)
+                {
+                    capitalRestant = 0;
+                }
 
-                planAmortissement.Add(new Mensualite(i, capitalRembourse, capitalRestant));
+                planAmortissement.Add(new Mensualite(
+                    mois,
+                    capitalRemboursePourLeMois,
+                    capitalRestant,
+                    interetPourLeMois,
+                    mensualiteCalculee
+                ));
+
+                // Si le capital restant atteint 0, inutile de continuer
+                if (capitalRestant == 0) break;
             }
-
 
             return planAmortissement;
         }
+
+
 
 
 

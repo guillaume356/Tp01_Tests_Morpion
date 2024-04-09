@@ -17,7 +17,7 @@ namespace CreditImmobilierTests
         public void Mensualite_Constructor_InitializesPropertiesCorrectly(int numero, double capitalRembourse, double capitalRestantDu)
         {
             
-            var mensualite = new Mensualite(numero, capitalRembourse, capitalRestantDu);
+            var mensualite = new Mensualite(numero, capitalRembourse, capitalRestantDu,0,0);
 
             
             Assert.Equal(numero, mensualite.Numero);
