@@ -33,7 +33,6 @@ namespace CreditImmobilier
                 double interetPourLeMois = capitalRestant * tauxMensuel;
                 double capitalRemboursePourLeMois = mensualiteCalculee - interetPourLeMois;
 
-                // Ajustement pour la dernière mensualité
                 if (mois == credit.DureeMois)
                 {
                     capitalRemboursePourLeMois += capitalRestant - capitalRemboursePourLeMois;
@@ -41,7 +40,6 @@ namespace CreditImmobilier
 
                 capitalRestant -= capitalRemboursePourLeMois;
 
-                // Ajout de la sécurité pour éviter un capital restant négatif
                 if (capitalRestant < 0)
                 {
                     capitalRestant = 0;
@@ -55,7 +53,6 @@ namespace CreditImmobilier
                     mensualiteCalculee
                 ));
 
-                // Si le capital restant atteint 0, inutile de continuer
                 if (capitalRestant == 0) break;
             }
 
